@@ -16,7 +16,10 @@ This project implements a lightweight API for blob metadata handling and token-p
 - Bearer token validation
 - Blob metadata storage
 - Blob metadata retrieval
--Local file storage: a simple local backend (`LocalStorage`) is working and saving files as intended but only tracking through the main database is left for this storage system. 
+- Local file storage
+- Added Base64/binary decoding support for data
+- local file storage backend
+- database-backed storage 
 
 ## API Endpoints
 
@@ -95,18 +98,7 @@ bin/rails db:create db:migrate
 bin/rails server
 ```
 
-## Notes
-
-- The current implementation stores blob metadata only.
-- Client-supplied `id` is used as the blob identifier.
-- `data` is stored only as metadata at this stage.
-
-- Metadata (`Blob`) now records `size` and can be extended to store `content_type` and `storage_path` for retrieval.
-
 ## Future work
 
-- Add Base64/binary decoding support for data
-- *Complete* the local file storage backend
-- Implement database-backed storage
 - Implement Amazon S3-compatible storage
 - Improve request validation and error handling

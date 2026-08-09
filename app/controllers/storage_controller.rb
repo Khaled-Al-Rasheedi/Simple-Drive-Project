@@ -21,13 +21,14 @@ before_action :check_token, only: [:store, :retrieve]
       return
     end #End of check for reserved ID
 
-  result = StorageRouter.route_storage(req_id, req_data)#To store the the blob
    blob = Blob.create(
      id: req_id,
      size: req_data.bytesize,
      storage_backend: ENV["STORAGE_BACKEND"]
     )
-  if blob.persisted? #Check if creation of blob was successful
+  result = StorageRouter.storage(req_id, req_data)#To store the the blob
+
+    if blob.persisted? #Check if creation of blob was successful
      render json: blob, status: :created #Show blob for this current stage to the user
    else
     #TODO: I should create a delete method to get rid of the files if blobs couldn't be created
@@ -44,7 +45,7 @@ def retrieve
   blob = Blob.find_by(id: req_id)
 
     if blob
-      local_data = LocalStorage.retrieve(req_id)
+      local_data = StorageRouter.retrieve(req_id)
       render json: { blob: blob, data: local_data }, status: :ok
     else
       render json: { errors: "Blob with ID #{req_id} not found" }, status: :not_found

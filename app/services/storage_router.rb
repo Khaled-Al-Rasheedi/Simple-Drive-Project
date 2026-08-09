@@ -1,6 +1,6 @@
 class StorageRouter
 
-    def self.route_storage(blob_id,blob_data)
+    def self.storage(blob_id,blob_data)
 #Step 1: Determine the current active storage backend
 #Step 2: Call upon the methods of each storage backend
 #Step 3: Return the storage backend used for tracking purposes
@@ -20,7 +20,20 @@ end
 
 
 #I need to add a column to the blob table so that I track the file system of it
-    def self.route_retrieval(blob)
+    def self.retrieve(blob_id)
+        storage_backend=Blob.find_by(id: blob_id)&.storage_backend
+        case storage_backend
+        when "local"
+            return LocalStorage.retrieve(blob_id)
+        when "s3"
+            return S3Storage.retrieve(blob_id)
+        when "database"
+            return DatabaseStorage.retrieve(blob_id)
+        else
+            return nil
+        end
+    
+    
     end
 
 
