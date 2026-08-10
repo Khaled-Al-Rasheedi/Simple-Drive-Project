@@ -16,6 +16,7 @@ before_action :check_token, only: [:store, :retrieve]
         return
     end #End of rescue block
 
+    
     if Blob.exists?(id: req_id) #Check if the ID is reserved
       render json: { errors: "Blob with ID #{req_id} already exists" }, status: :conflict
       return

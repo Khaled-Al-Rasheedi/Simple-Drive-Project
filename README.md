@@ -1,104 +1,146 @@
 # Simple Drive API
 
-A small Rails API for storing and retrieving blob metadata with bearer token authentication.
+A small Rails API for storing and retrieving blob metadata and files with bearer token authentication.
 
 ## Overview
 
-This project implements a lightweight API for blob metadata handling and token-protected access. The current focus is on:
-- issuing bearer tokens
-- validating bearer tokens
-- storing blob metadata
-- retrieving stored blob metadata by ID
+This project implements a lightweight API for blob metadata handling, file storage, and token-protected access. The current focus is on:
+- Issuing and validating bearer tokens
+- Storing blob metadata and binary payloads
+- Retrieving stored blob metadata and files by ID
+- Routing files across multiple storage backends
 
 ## Features Completed
 
-- Bearer token generation
-- Bearer token validation
-- Blob metadata storage
-- Blob metadata retrieval
-- Local file storage
-- Added Base64/binary decoding support for data
-- local file storage backend
-- database-backed storage 
+- Bearer token generation & validation
+- Blob metadata tracking (ID, size, created_at, storage_backend)
+- Base64/binary encoding and decoding support for file payloads
+- Multi-backend storage routing:
+  - Local file system storage
+  - Database-backed storage (relational binary tables)
+  - Amazon S3 Storage(Without the usuage of any relevant library)
 
 ## API Endpoints
 
-### Generate token
+### Generate Token
 
 `POST /generate-token`
 
-Response:
+**Response:**
 ```json
 {
   "token": "..."
 }
 ```
 
-### Validate token
+### Validate Token
 
 `GET /check-token`
 
-Headers:
+**Headers:**
 ```text
 Authorization: Bearer <token>
 ```
 
-Success response:
+**Success Response:**
 ```json
 {
   "message": "Token is valid"
 }
 ```
 
-### Store blob metadata
+### Store Blob Metadata & File
 
 `POST /store?id=<id>&data=<data>`
 
-Headers:
+**Headers:**
 ```text
 Authorization: Bearer <token>
 ```
 
-Success response:
+**Success Response:**
 ```json
 {
   "id": "...",
   "size": 8,
-  "storage_backend": "example",
+  "storage_backend": "database",
   "created_at": "...",
   "updated_at": "..."
 }
 ```
 
-### Retrieve blob metadata
+### Retrieve Blob Metadata & File
 
 `GET /retrieve/<id>` or `GET /retrieve?id=<id>`
 
-Headers:
+**Headers:**
 ```text
 Authorization: Bearer <token>
 ```
 
-Success response:
+**Success Response:**
 ```json
 {
   "id": "...",
+  "data": "base64_encoded_string_here...",
   "size": 8,
-  "storage_backend": "example",
+  "storage_backend": "database",
   "created_at": "...",
   "updated_at": "..."
 }
 ```
 
-## Setup
+---
 
+## Setup & Installation
+
+Follow these steps to set up the project locally on your machine:
+
+### 1. Prerequisites
+Ensure you have Ruby and Rails installed on your system.
+
+### 2. Clone the Repository
 ```bash
-bundle install
-bin/rails db:create db:migrate
-bin/rails server
+git clone [https://github.com/Khaled-Al-Rasheedi/Simple-Drive-Project.git](https://github.com/Khaled-Al-Rasheedi/Simple-Drive-Project.git)
+cd simple_drive_api
 ```
 
-## Future work
+### 3. Install Dependencies
+```bash
+bundle install
+```
 
-- Implement Amazon S3-compatible storage
+### 4. Database Setup
+Create and migrate the database:
+```bash
+bin/rails db:create
+bin/rails db:migrate
+```
+
+### 5. Environment Configuration
+Create a `.env` file in the root directory or set your environment variables to configure your active storage backend:
+```env
+STORAGE_BACKEND=database   # Options: local, database, s3, ftp
+
+# Required if using the 's3' storage backend:
+AWS_BUCKET_NAME=your_bucket_name
+AWS_REGION=your_aws_region
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+```
+
+### 6. Run the Server
+```bash
+bin/rails server
+```
+The API will be available at `http://localhost:3000`, where you can interact with it using Postman or similar API software.
+
+---
+
+## Future Work
+
 - Improve request validation and error handling
+- Build FTP Server storage adapter
+- Implement Unit Testing
+
+```

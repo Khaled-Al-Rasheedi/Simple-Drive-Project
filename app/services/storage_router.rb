@@ -8,18 +8,14 @@ class StorageRouter
     case storage_backend
     when "local"
         LocalStorage.store(blob_id, blob_data)
-        return storage_backend
     when "s3"
         S3Storage.store(blob_id, blob_data)
-        return storage_backend
     when "database"
         DatabaseStorage.store(blob_id, blob_data)
-        return storage_backend
     end
 end
 
 
-#I need to add a column to the blob table so that I track the file system of it
     def self.retrieve(blob_id)
         storage_backend=Blob.find_by(id: blob_id)&.storage_backend
         case storage_backend
