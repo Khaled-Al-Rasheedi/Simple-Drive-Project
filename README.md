@@ -1,6 +1,6 @@
 # Simple Drive API
 
-A small Rails API for storing and retrieving blob metadata and files with bearer token authentication.
+A small, robust Rails API for storing and retrieving blob metadata and files with bearer token authentication and multi-backend distributed storage.
 
 ## Overview
 
@@ -8,7 +8,8 @@ This project implements a lightweight API for blob metadata handling, file stora
 - Issuing and validating bearer tokens
 - Storing blob metadata and binary payloads
 - Retrieving stored blob metadata and files by ID
-- Routing files across multiple storage backends
+- Routing files dynamically across multiple storage backends
+- Ensuring data integrity with optimistic transaction rollbacks
 
 ## Features Completed
 
@@ -18,7 +19,9 @@ This project implements a lightweight API for blob metadata handling, file stora
 - Multi-backend storage routing:
   - Local file system storage
   - Database-backed storage (relational binary tables)
-  - Amazon S3 Storage(Without the usuage of any relevant library)
+  - Amazon S3 Storage (Built strictly with raw HTTP/cryptography, without the AWS SDK)
+  - FTP Server Storage 
+
 
 ## API Endpoints
 
@@ -118,7 +121,7 @@ bin/rails db:migrate
 ```
 
 ### 5. Environment Configuration
-Create a `.env` file in the root directory or set your environment variables to configure your active storage backend:
+Create a `.env` file in the root directory and set your environment variables to configure your active storage backend:
 ```env
 STORAGE_BACKEND=database   # Options: local, database, s3, ftp
 
@@ -127,6 +130,12 @@ AWS_BUCKET_NAME=your_bucket_name
 AWS_REGION=your_aws_region
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
+
+# Required if using the 'ftp' storage backend:
+FTP_HOST=127.0.0.1
+FTP_PORT=2121
+FTP_USERNAME=admin
+FTP_PASSWORD=1234
 ```
 
 ### 6. Run the Server
@@ -138,9 +147,5 @@ The API will be available at `http://localhost:3000`, where you can interact wit
 ---
 
 ## Future Work
-
-- Improve request validation and error handling
-- Build FTP Server storage adapter
-- Implement Unit Testing
-
-```
+- Security features against popular cyberattacks
+- Implement Unit Testing 
