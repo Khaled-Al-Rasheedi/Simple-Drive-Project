@@ -3,7 +3,7 @@ class StorageRouter
     def self.storage(blob_id,blob_data)
 #Step 1: Determine the current active storage backend
 #Step 2: Call upon the methods of each storage backend
-#Step 3: Return the storage backend used for tracking purposes
+#Step 3: Return true/false so the storage_controller knows to keep or destroy the blob
     storage_backend = ENV["STORAGE_BACKEND"] || "local" # Default to local storage if not specified
     case storage_backend
     when "local"
@@ -12,6 +12,11 @@ class StorageRouter
         S3Storage.store(blob_id, blob_data)
     when "database"
         DatabaseStorage.store(blob_id, blob_data)
+    when "ftp"
+        FtpStorage.store(blob_id, blob_data)
+    else
+      # Fallback: Trigger a rollback if the ENV variable is misspelled
+      false
     end
 end
 
@@ -25,6 +30,8 @@ end
             return S3Storage.retrieve(blob_id)
         when "database"
             return DatabaseStorage.retrieve(blob_id)
+        when "ftp"
+            return FtpStorage.retrieve(blob_id)
         else
             return nil
         end

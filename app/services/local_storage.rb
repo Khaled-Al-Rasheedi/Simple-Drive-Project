@@ -8,6 +8,15 @@ class LocalStorage
 
     file_path = storage_path.join("#{id}.bin")#name of the file 
     File.binwrite(file_path, data)
+
+    # if the above was successful, return true to storage_router, the rest is skipped
+    true
+  rescue StandardError => e
+    # Catch disk full, permission denied, or missing folder errors
+    Rails.logger.error("Local Storage failed: #{e.message}")
+    false # 
+
+
 end
 
 def self.retrieve(id)

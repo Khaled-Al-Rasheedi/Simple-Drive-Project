@@ -28,7 +28,7 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 /local-storage
-
+/ftp-storage/*
 
 
 # Ignore key files for decrypting credentials and more.

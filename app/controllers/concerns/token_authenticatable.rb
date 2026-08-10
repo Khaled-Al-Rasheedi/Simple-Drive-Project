@@ -9,7 +9,7 @@ module TokenAuthenticatable
     end
 
     token = auth_header.split(" ").last 
-#To extract the token from the "Bearer <token>" format
+#To extract the token from the {Bearr <token> } format
     if ApiToken.exists?(token: token) #No render otherwise the request will stop here
     else
       render json: { error: "Invalid token" }, status: :unauthorized
