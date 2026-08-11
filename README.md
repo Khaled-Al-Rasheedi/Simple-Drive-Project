@@ -138,7 +138,7 @@ bin/rails db:migrate
 Create a `.env` file in the project root and set the backend configuration you want to use:
 
 ```env
-STORAGE_BACKEND=database
+STORAGE_BACKEND= #Options: local OR database OR s3 OR ftp
 
 # Required for S3 storage
 AWS_BUCKET_NAME=your_bucket_name
