@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: MyString
+  id: MyString1
   size: 1
   storage_backend: MyString
 
 two:
-  id: MyString
+  id: MyString2
   size: 1
   storage_backend: MyString

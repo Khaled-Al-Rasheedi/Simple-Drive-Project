@@ -1,4 +1,6 @@
 class DatabaseStorage
+
+
   def self.store(id, data)
     BlobStorage.create!(
       blob_id: id,
@@ -15,7 +17,7 @@ class DatabaseStorage
 
 
 
-  end
+  
 
   def self.retrieve(id)
     record = BlobStorage.find_by(blob_id: id)    
